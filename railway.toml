@@ -1,6 +1,5 @@
 [build]
-builder = "NIXPACKS"
-buildCommand = "npm install"
+builder = "RAILPACK"
 
 [deploy]
 startCommand = "node index.js"
