@@ -17,7 +17,7 @@ const {
 const schema = require('./schema');
 const perms = require('./perms');
 
-const COR = { marca: 0xDC143C, branco: 0xFFFFFF, ok: 0x57F287, aviso: 0xFEE75C, erro: 0xED4245, neutro: 0x2B2D31 };
+const COR = { marca: 0xFFFFFF, branco: 0xFFFFFF, ok: 0x57F287, aviso: 0xFEE75C, erro: 0xED4245, neutro: 0x2B2D31 };
 const BANNER_URL = require('../../utils/assets').assetUrl('kael-banner.png');
 const POR_PAGINA = 10;
 const CHARS_ARVORE = 2600;

@@ -1,6 +1,6 @@
 const { createCanvas } = require('@napi-rs/canvas');
 
-async function gerarBannerLoja(nomeServidor = 'VorteX') {
+async function gerarBannerLoja(nomeServidor = 'Kael') {
   const W = 800, H = 200;
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext('2d');
@@ -8,7 +8,7 @@ async function gerarBannerLoja(nomeServidor = 'VorteX') {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, W, H);
 
-  ctx.fillStyle = '#DC143C';
+  ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, 5, H);
 
   const nome = nomeServidor.toUpperCase();
@@ -18,7 +18,7 @@ async function gerarBannerLoja(nomeServidor = 'VorteX') {
   ctx.textBaseline = 'middle';
   ctx.fillText(nome, W / 2, H / 2);
 
-  ctx.strokeStyle = '#DC143C';
+  ctx.strokeStyle = '#FFFFFF';
   ctx.lineWidth = 2;
   ctx.beginPath();
   const textWidth = ctx.measureText(nome).width;

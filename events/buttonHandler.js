@@ -359,10 +359,10 @@ module.exports = {
       const guildData = db.getGuild(guild.id);
       const t = guildData.ticket || {};
       const thumb = guild.iconURL({ dynamic: true, size: 256 }) || client?.user?.displayAvatarURL({ size: 256 }) || null;
-      const embedSup = new EmbedBuilder().setColor(0xFFFFFF).setTitle('🎫 | Atendimento VORTEX').setDescription('🎧 **Suporte:** Tire duvidas com nossa equipe\n<:dev:1525538335139958915> **Falar com ADM:** Reembolso ou pagamento\n🤝 **Parceria:** Faca parceria com a VORTEX\n<a:trofeu:1532499321008951538> **Vagas Mediador:** Garanta sua vaga\n\nCertifique-se de ja ter lido as **regras**.').setFooter({text:'VORTEX TICKET SYSTEM'}).setTimestamp();
+      const embedSup = new EmbedBuilder().setColor(0xFFFFFF).setTitle('🎫 | Atendimento KAEL').setDescription('🎧 **Suporte:** Tire duvidas com nossa equipe\n<:dev:1525538335139958915> **Falar com ADM:** Reembolso ou pagamento\n🤝 **Parceria:** Faca parceria com a KAEL\n<a:trofeu:1532499321008951538> **Vagas Mediador:** Garanta sua vaga\n\nCertifique-se de ja ter lido as **regras**.').setFooter({text:'KAEL TICKET SYSTEM'}).setTimestamp();
       if (thumb) embedSup.setThumbnail(thumb);
       if (t.banner) embedSup.setImage(t.banner);
-      const selectRow = new ActionRowBuilder().addComponents(new StringSelectMenuBuilder().setCustomId('ticket_select').setPlaceholder('Selecione o tipo de suporte...').addOptions([{ label: 'Suporte', description: 'Tire duvidas com nossa equipe', emoji: '🎧', value: 'suporte' }, { label: 'Falar com ADM', description: 'Reembolso ou pagamento', emoji: '<:dev:1525538335139958915>', value: 'adm' }, { label: 'Parceria', description: 'Faca parceria com a VORTEX', emoji: '🤝', value: 'parceria' }, { label: 'Vagas Mediador', description: 'Garanta sua vaga como mediador', emoji: '<a:trofeu:1532499321008951538>', value: 'mediador' }]));
+      const selectRow = new ActionRowBuilder().addComponents(new StringSelectMenuBuilder().setCustomId('ticket_select').setPlaceholder('Selecione o tipo de suporte...').addOptions([{ label: 'Suporte', description: 'Tire duvidas com nossa equipe', emoji: '🎧', value: 'suporte' }, { label: 'Falar com ADM', description: 'Reembolso ou pagamento', emoji: '<:dev:1525538335139958915>', value: 'adm' }, { label: 'Parceria', description: 'Faca parceria com a KAEL', emoji: '🤝', value: 'parceria' }, { label: 'Vagas Mediador', description: 'Garanta sua vaga como mediador', emoji: '<a:trofeu:1532499321008951538>', value: 'mediador' }]));
       await interaction.reply({ embeds: [embedSup], components: [selectRow], ephemeral: true });
       return;
     }
@@ -370,7 +370,7 @@ module.exports = {
       const guildData = db.getGuild(guild.id);
       const pix = guildData.pix;
       if (!pix || !pix.chave) { await interaction.reply({ embeds: [new EmbedBuilder().setColor(0xFFFFFF).setTitle('PIX nao configurado').setDescription('Use: /config pix-chave')], ephemeral: true }); return; }
-      const embedPix = new EmbedBuilder().setColor(0xFFFFFF).setTitle('Chave PIX').setDescription('Recebedor: ' + (pix.nome || 'Nao definido') + '\nChave: ' + pix.chave).setFooter({ text: 'VORTEX BOT' }).setTimestamp();
+      const embedPix = new EmbedBuilder().setColor(0xFFFFFF).setTitle('Chave PIX').setDescription('Recebedor: ' + (pix.nome || 'Nao definido') + '\nChave: ' + pix.chave).setFooter({ text: 'KAEL' }).setTimestamp();
       if (pix.qrcode) embedPix.setImage(pix.qrcode);
       await interaction.reply({ embeds: [embedPix], ephemeral: true });
       return;

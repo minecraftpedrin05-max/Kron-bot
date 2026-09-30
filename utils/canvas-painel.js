@@ -2,7 +2,7 @@ const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
 const LOGO_URL = require("path").join(__dirname, "..", "assets", "kael-avatar.png");
 
-const OURO = "#FFD700";
+const OURO = "#E6E6E6";
 const BRANCO = "#FFFFFF";
 const CINZA = "#1A1A1A";
 const CINZA_CLARO = "#cfcfcf";
@@ -18,7 +18,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 /**
- * Gera o banner do painel no estilo dashboard premium (referência Zecastx Pro).
+ * Gera o banner do painel no estilo dashboard premium (preto e branco).
  * @param {object} dados
  * @param {string} dados.nome     - nome a saudar (ex: getNome(guild))
  * @param {string} dados.versao
@@ -50,12 +50,12 @@ async function gerarPainelCanvas(dados) {
   ctx.fillRect(0, 0, W, bannerH);
 
   const glow = ctx.createRadialGradient(W - 150, bannerH / 2, 20, W - 150, bannerH / 2, 320);
-  glow.addColorStop(0, "rgba(255,215,0,0.25)");
-  glow.addColorStop(1, "rgba(255,215,0,0)");
+  glow.addColorStop(0, "rgba(255,255,255,0.25)");
+  glow.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, bannerH);
 
-  ctx.strokeStyle = "rgba(255,215,0,0.08)";
+  ctx.strokeStyle = "rgba(255,255,255,0.08)";
   ctx.lineWidth = 1;
   for (let i = 0; i < 6; i++) {
     ctx.beginPath();
@@ -74,8 +74,8 @@ async function gerarPainelCanvas(dados) {
       logoX + logoSize / 2, logoY + logoSize / 2, 10,
       logoX + logoSize / 2, logoY + logoSize / 2, logoSize
     );
-    logoGlow.addColorStop(0, "rgba(255,215,0,0.45)");
-    logoGlow.addColorStop(1, "rgba(255,215,0,0)");
+    logoGlow.addColorStop(0, "rgba(255,255,255,0.45)");
+    logoGlow.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = logoGlow;
     ctx.beginPath();
     ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize, 0, Math.PI * 2);
@@ -106,14 +106,14 @@ async function gerarPainelCanvas(dados) {
   ctx.fillStyle = CINZA_CLARO;
   ctx.font = "20px sans-serif";
   ctx.fillText(
-    "Sistema profissional para gerenciamento de filas, vendas, pagamentos e partidas.",
+    "Bot de vendas com entrega rápida, pagamentos seguros e suporte 24/7.",
     W / 2,
     bannerH - 40
   );
   ctx.textAlign = "left";
 
   // ════════════════════════════════════════
-  // FAIXA "VORTEX SYSTEM" - fundo branco, estilo Zecastx
+  // FAIXA "KAEL SYSTEM" - fundo branco
   // ════════════════════════════════════════
   const tagY = bannerH + 25;
   const tagH = 55;
@@ -124,7 +124,7 @@ async function gerarPainelCanvas(dados) {
   ctx.fillStyle = "#000000";
   ctx.font = "bold 26px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText(">>  VORTEX SYSTEM  <<", W / 2, tagY + tagH / 2 + 9);
+  ctx.fillText(">>  KAEL SYSTEM  <<", W / 2, tagY + tagH / 2 + 9);
   ctx.textAlign = "left";
 
   // ════════════════════════════════════════
@@ -151,10 +151,10 @@ async function gerarPainelCanvas(dados) {
   y += 28;
   ctx.fillStyle = OURO;
   ctx.font = "bold 19px sans-serif";
-  ctx.fillText("Vortex System", 60, y);
+  ctx.fillText("Kael", 60, y);
 
   // ════════════════════════════════════════
-  // LINHA DE VERSÃO / UPDATE (estilo Zecastx, texto simples)
+  // LINHA DE VERSÃO / UPDATE (texto simples)
   // ════════════════════════════════════════
   y += 45;
 

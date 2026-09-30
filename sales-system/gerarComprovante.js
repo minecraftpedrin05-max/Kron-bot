@@ -107,7 +107,7 @@ async function gerarComprovante({ username, avatarURL, produtoNome, produto, pro
     ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
     ctx.restore();
   } catch {
-    ctx.fillStyle = '#DC143C';
+    ctx.fillStyle = '#3a3b3e';
     ctx.beginPath();
     ctx.arc(avatarX + avatarSize / 2, avatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
     ctx.fill();
@@ -244,7 +244,23 @@ async function gerarComprovante({ username, avatarURL, produtoNome, produto, pro
 
   ctx.textAlign = 'right';
   ctx.fillText(site, width - pad, footerY);
+  const larguraSite = ctx.measureText(site).width;
   ctx.textAlign = 'left';
+
+  try {
+    const logoKael = await loadImage(require('path').join(__dirname, '..', 'assets', 'kael-avatar.png'));
+    const tam = 20;
+    const lx = width - pad - larguraSite - tam - 8;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(lx + tam / 2, footerY - 6, tam / 2, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(logoKael, lx, footerY - 16, tam, tam);
+    ctx.restore();
+  } catch {
+    // Sem a logo do Kael — segue só com o texto.
+  }
 
   return canvas.toBuffer('image/png');
 }
