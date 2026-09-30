@@ -1,0 +1,332 @@
+[
+ {
+  "id": "1533221942256078968",
+  "name": "CadLock",
+  "animated": false
+ },
+ {
+  "id": "1524206738885050388",
+  "name": "apagar",
+  "animated": false
+ },
+ {
+  "id": "1524206792626933831",
+  "name": "arrow",
+  "animated": false
+ },
+ {
+  "id": "1533259816871657522",
+  "name": "block",
+  "animated": false
+ },
+ {
+  "id": "1524207085850591273",
+  "name": "bot",
+  "animated": false
+ },
+ {
+  "id": "1524207165496099007",
+  "name": "caixa",
+  "animated": false
+ },
+ {
+  "id": "1524207214791884890",
+  "name": "canal",
+  "animated": false
+ },
+ {
+  "id": "1533880211882381422",
+  "name": "card",
+  "animated": false
+ },
+ {
+  "id": "1524207358367236319",
+  "name": "carregarAnimado",
+  "animated": true
+ },
+ {
+  "id": "1515379197349073107",
+  "name": "carrinho",
+  "animated": false
+ },
+ {
+  "id": "1524207445600370719",
+  "name": "carrinho",
+  "animated": false
+ },
+ {
+  "id": "1524207827009409054",
+  "name": "casa",
+  "animated": false
+ },
+ {
+  "id": "1524207889441357917",
+  "name": "clock",
+  "animated": false
+ },
+ {
+  "id": "1524208021071462533",
+  "name": "config2",
+  "animated": false
+ },
+ {
+  "id": "1524208114327617588",
+  "name": "config3",
+  "animated": false
+ },
+ {
+  "id": "1515379328475730081",
+  "name": "configuracoes",
+  "animated": false
+ },
+ {
+  "id": "1513207838472802304",
+  "name": "confimado",
+  "animated": false
+ },
+ {
+  "id": "1533880329536802896",
+  "name": "copypast",
+  "animated": false
+ },
+ {
+  "id": "1520751629350080582",
+  "name": "coroa",
+  "animated": false
+ },
+ {
+  "id": "1524209015008002148",
+  "name": "cupom",
+  "animated": false
+ },
+ {
+  "id": "1525538335139958915",
+  "name": "dev",
+  "animated": false
+ },
+ {
+  "id": "1528400388137549864",
+  "name": "editar",
+  "animated": false
+ },
+ {
+  "id": "1528400492982571111",
+  "name": "embed",
+  "animated": false
+ },
+ {
+  "id": "1512951960733483008",
+  "name": "escala",
+  "animated": false
+ },
+ {
+  "id": "1533259504936816641",
+  "name": "folder",
+  "animated": false
+ },
+ {
+  "id": "1513175932687483030",
+  "name": "fone",
+  "animated": false
+ },
+ {
+  "id": "1533080648196292679",
+  "name": "foto",
+  "animated": false
+ },
+ {
+  "id": "1514959476493521117",
+  "name": "grafico",
+  "animated": false
+ },
+ {
+  "id": "1533235376464986313",
+  "name": "ia",
+  "animated": false
+ },
+ {
+  "id": "1533080710544625684",
+  "name": "import1",
+  "animated": false
+ },
+ {
+  "id": "1533251823778005082",
+  "name": "link",
+  "animated": false
+ },
+ {
+  "id": "1512955357016756304",
+  "name": "logs",
+  "animated": false
+ },
+ {
+  "id": "1528400709018583100",
+  "name": "mais2",
+  "animated": false
+ },
+ {
+  "id": "1534356044367790161",
+  "name": "medal",
+  "animated": false
+ },
+ {
+  "id": "1532503308961448096",
+  "name": "money",
+  "animated": false
+ },
+ {
+  "id": "1513207873243578438",
+  "name": "naoconfigurado",
+  "animated": false
+ },
+ {
+  "id": "1528400986744295475",
+  "name": "negativo",
+  "animated": false
+ },
+ {
+  "id": "1533081528966316083",
+  "name": "npertubar",
+  "animated": false
+ },
+ {
+  "id": "1533081467918221565",
+  "name": "online",
+  "animated": false
+ },
+ {
+  "id": "1513176718934937813",
+  "name": "pasta",
+  "animated": false
+ },
+ {
+  "id": "1528401023054385202",
+  "name": "pedidoEntregue",
+  "animated": false
+ },
+ {
+  "id": "1528401082777342044",
+  "name": "pedidoSolicitado",
+  "animated": false
+ },
+ {
+  "id": "1528401146274910289",
+  "name": "personalizarE",
+  "animated": false
+ },
+ {
+  "id": "1528401197642551436",
+  "name": "pix",
+  "animated": false
+ },
+ {
+  "id": "1528401238197276702",
+  "name": "positivo",
+  "animated": false
+ },
+ {
+  "id": "1538356348989743166",
+  "name": "present",
+  "animated": false
+ },
+ {
+  "id": "1528401373874487467",
+  "name": "produtoEntregue",
+  "animated": false
+ },
+ {
+  "id": "1533080818258411662",
+  "name": "raio",
+  "animated": false
+ },
+ {
+  "id": "1528401542070145135",
+  "name": "rendimentos",
+  "animated": false
+ },
+ {
+  "id": "1528841000548569239",
+  "name": "safety",
+  "animated": false
+ },
+ {
+  "id": "1533080403810713773",
+  "name": "save",
+  "animated": false
+ },
+ {
+  "id": "1528840971096297482",
+  "name": "sino",
+  "animated": false
+ },
+ {
+  "id": "1520998962545295530",
+  "name": "sorteio",
+  "animated": false
+ },
+ {
+  "id": "1533089699844067418",
+  "name": "sorteio",
+  "animated": false
+ },
+ {
+  "id": "1512951869327278140",
+  "name": "staff",
+  "animated": false
+ },
+ {
+  "id": "1533454585169973288",
+  "name": "termos",
+  "animated": false
+ },
+ {
+  "id": "1533089802856038461",
+  "name": "text",
+  "animated": false
+ },
+ {
+  "id": "1515363874873020508",
+  "name": "tickets",
+  "animated": false
+ },
+ {
+  "id": "1533222180408791080",
+  "name": "tools1",
+  "animated": false
+ },
+ {
+  "id": "1532499321008951538",
+  "name": "trofeu",
+  "animated": true
+ },
+ {
+  "id": "1533235838345937086",
+  "name": "trofeu",
+  "animated": false
+ },
+ {
+  "id": "1532137085081878558",
+  "name": "user",
+  "animated": false
+ },
+ {
+  "id": "1528840901739151430",
+  "name": "users",
+  "animated": false
+ },
+ {
+  "id": "1528840851654971443",
+  "name": "visible",
+  "animated": false
+ },
+ {
+  "id": "1528548726518448198",
+  "name": "voltar",
+  "animated": false
+ },
+ {
+  "id": "1523791736948920433",
+  "name": "xpooo",
+  "animated": false
+ }
+]

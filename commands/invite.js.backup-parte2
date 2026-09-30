@@ -1,0 +1,179 @@
+// ═══════════════════════════════════════════════════════════════════════
+// commands/invite.js
+//
+// KRON INVITE SYSTEM — comando /invite + painel base (Parte 1).
+//
+// A aparência completa/personalização avançada do embed fica para a
+// Parte 2. Aqui só a fundação funcional: painel com os 4 botões pedidos,
+// todos com handler funcional.
+// ═══════════════════════════════════════════════════════════════════════
+
+const {
+  SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder,
+  ActionRowBuilder, ButtonBuilder, ButtonStyle,
+} = require('discord.js');
+const inviteDb = require('../database/inviteDb');
+const { getNextReward } = require('../invite-system/inviteRewards');
+const { CORES } = require('../config/constants');
+
+const CUSTOM_IDS = {
+  CONFIRMAR: 'invite_confirmar',
+  COPIAR: 'invite_copiar',
+  MEUS: 'invite_meus',
+  RANKING: 'invite_ranking',
+};
+
+function isAdmin(interaction) {
+  return !!interaction.member?.permissions?.has(PermissionFlagsBits.Administrator);
+}
+
+function buildPanelEmbed(guild) {
+  const config = inviteDb.getGuildConfig(guild.id);
+  return new EmbedBuilder()
+    .setColor(CORES.INFO)
+    .setTitle('📨 KRON INVITE SYSTEM')
+    .setDescription(
+      config.embedConfig?.description ||
+      'Convide amigos para o servidor e acompanhe seu progresso!\n\n' +
+      '> ✅ **Confirmar** — confirma sua participação na campanha atual.\n' +
+      '> 🔗 **Copiar Convite** — pega seu link de convite pessoal.\n' +
+      '> 📊 **Meus Convites** — veja suas estatísticas.\n' +
+      '> 🏆 **Ranking** — veja o top de convidadores do servidor.'
+    )
+    .setFooter({ text: guild.name })
+    .setTimestamp();
+}
+
+function buildPanelRow() {
+  return new ActionRowBuilder().addComponents(
+    new ButtonBuilder().setCustomId(CUSTOM_IDS.CONFIRMAR).setLabel('Confirmar').setEmoji('✅').setStyle(ButtonStyle.Success),
+    new ButtonBuilder().setCustomId(CUSTOM_IDS.COPIAR).setLabel('Copiar Convite').setEmoji('🔗').setStyle(ButtonStyle.Primary),
+    new ButtonBuilder().setCustomId(CUSTOM_IDS.MEUS).setLabel('Meus Convites').setEmoji('📊').setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder().setCustomId(CUSTOM_IDS.RANKING).setLabel('Ranking').setEmoji('🏆').setStyle(ButtonStyle.Secondary),
+  );
+}
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('invite')
+    .setDescription('Abre o painel do KRON Invite System')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+
+  async execute(interaction) {
+    if (!interaction.guild) {
+      return interaction.reply({ content: '<:negativo:1528400986744295475> Esse comando só funciona dentro de um servidor.', ephemeral: true });
+    }
+    if (!isAdmin(interaction)) {
+      return interaction.reply({ content: '<:negativo:1528400986744295475> Você precisa ser Administrator para abrir o painel do Invite System.', ephemeral: true });
+    }
+
+    const config = inviteDb.getGuildConfig(interaction.guild.id);
+    const embed = buildPanelEmbed(interaction.guild);
+    const row = buildPanelRow();
+
+    const msg = await interaction.reply({ embeds: [embed], components: [row], fetchReply: true });
+    inviteDb.updateGuildConfig(interaction.guild.id, {
+      panelChannelId: interaction.channel.id,
+      panelMessageId: msg.id,
+    });
+  },
+
+  CUSTOM_IDS,
+  buildPanelEmbed,
+  buildPanelRow,
+
+  // ── Botão: ✅ Confirmar ──
+  async handleConfirmar(interaction) {
+    const { guild, user } = interaction;
+    const config = inviteDb.getGuildConfig(guild.id);
+    const ok = inviteDb.confirmParticipation(guild.id, user.id, config.campaignId);
+    if (!ok) {
+      return interaction.reply({ content: 'ℹ️ Você já confirmou sua participação.', ephemeral: true });
+    }
+    inviteDb.logHistory({ guildId: guild.id, userId: user.id, action: 'confirmacao', campaignId: config.campaignId });
+    return interaction.reply({ content: '✅ Participação confirmada com sucesso!', ephemeral: true });
+  },
+
+  // ── Botão: 🔗 Copiar Convite ──
+  async handleCopiar(interaction) {
+    const { guild, user } = interaction;
+    await interaction.deferReply({ ephemeral: true });
+
+    try {
+      let invite = inviteDb.getUserInvite(guild.id, user.id);
+
+      // Reutiliza o convite se ele ainda existir de fato no Discord.
+      if (invite) {
+        const stillExists = await guild.invites.fetch({ code: invite.invite_code }).catch(() => null);
+        if (!stillExists) invite = null;
+      }
+
+      if (!invite) {
+        const me = guild.members.me;
+        if (!me?.permissions.has(PermissionFlagsBits.CreateInstantInvite)) {
+          return interaction.editReply('<:negativo:1528400986744295475> Não tenho permissão para criar convites neste servidor.');
+        }
+        const channel = guild.channels.cache.find(c => c.isTextBased?.() && c.viewable &&
+          c.permissionsFor(me)?.has(PermissionFlagsBits.CreateInstantInvite));
+        if (!channel) {
+          return interaction.editReply('<:negativo:1528400986744295475> Não encontrei um canal onde eu possa criar convites.');
+        }
+        const created = await channel.createInvite({ maxAge: 0, unique: true, reason: `Convite individual — KRON Invite System (${user.id})` });
+        inviteDb.upsertInvite(guild.id, created.code, user.id, 0, null);
+        invite = inviteDb.getInvite(guild.id, created.code);
+      }
+
+      return interaction.editReply(`🔗 Seu convite pessoal: **https://discord.gg/${invite.invite_code}**`);
+    } catch (e) {
+      console.error('[InviteSystem] Erro ao copiar convite:', e);
+      return interaction.editReply('<:negativo:1528400986744295475> Ocorreu um erro ao gerar seu convite.');
+    }
+  },
+
+  // ── Botão: 📊 Meus Convites ──
+  async handleMeus(interaction) {
+    const { guild, user } = interaction;
+    const config = inviteDb.getGuildConfig(guild.id);
+    const stats = inviteDb.getInviterStats(guild.id, user.id, config);
+    const { next, faltam } = getNextReward(guild, user.id);
+
+    const embed = new EmbedBuilder()
+      .setColor(CORES.INFO)
+      .setTitle(`📊 Convites de ${user.username}`)
+      .addFields(
+        { name: 'Total', value: `\`${stats.total}\``, inline: true },
+        { name: 'Válidos', value: `\`${stats.validos}\``, inline: true },
+        { name: 'Suspeitos', value: `\`${stats.suspeitos}\``, inline: true },
+        { name: 'Membros atuais', value: `\`${stats.atuais}\``, inline: true },
+        { name: 'Saíram', value: `\`${stats.sairam}\``, inline: true },
+        { name: 'Próxima recompensa', value: next ? `**${next.name}** (faltam \`${faltam}\`)` : 'Nenhuma recompensa configurada ou tudo desbloqueado.', inline: false },
+      )
+      .setThumbnail(user.displayAvatarURL())
+      .setTimestamp();
+
+    return interaction.reply({ embeds: [embed], ephemeral: true });
+  },
+
+  // ── Botão: 🏆 Ranking ──
+  async handleRanking(interaction) {
+    const { guild } = interaction;
+    const config = inviteDb.getGuildConfig(guild.id);
+    const top = inviteDb.getRanking(guild.id, config, 10);
+
+    if (!top.length) {
+      return interaction.reply({ content: 'ℹ️ Ainda não há convites registrados neste servidor.', ephemeral: true });
+    }
+
+    const linhas = top.map(e => `**#${e.position}** — <@${e.userId}> — \`${e.count}\` convite(s)`);
+    const posicaoUsuario = inviteDb.getUserPosition(guild.id, interaction.user.id, config);
+
+    const embed = new EmbedBuilder()
+      .setColor(CORES.INFO)
+      .setTitle('🏆 Ranking de Convites')
+      .setDescription(linhas.join('\n'))
+      .setFooter({ text: posicaoUsuario ? `Sua posição: #${posicaoUsuario}` : 'Você ainda não está no ranking' })
+      .setTimestamp();
+
+    return interaction.reply({ embeds: [embed], ephemeral: true });
+  },
+};

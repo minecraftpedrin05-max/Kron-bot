@@ -1,0 +1,54 @@
+--- commands/produto.js	2026-09-27 00:56:14.000000000 +0000
++++ commands/produto.js	2026-09-27 11:34:45.978230647 +0000
+@@ -720,7 +720,7 @@
+ // nome do produto — evita duplicação visual.
+ // Corrigido: estoque exibido usa o valor real (array quando sem
+ // variante, campo numérico quando com variante).
+-function buildRevisaoEmbedPropria({ user, nomeItem, varianteNome, estoqueTexto, dataCriacao, variante, pedido, guild }) {
++function buildRevisaoEmbedPropria({ user, nomeItem, varianteNome, estoqueTexto, dataCriacao, variante, pedido, guild, produto }) {
+   const { calcularTotal } = require('../sales-system/salesManager');
+   const { precoFinalStr, subtotalStr } = calcularTotal(variante, pedido);
+   const qtd = pedido.quantidade || 1;
+@@ -741,9 +741,15 @@
+ 
+   const embed = new EmbedBuilder()
+     .setColor('#FFFFFF')
++    .setAuthor({ name: user.globalName || user.username, iconURL: user.displayAvatarURL({ extension: 'png', size: 128 }) })
+     .setTitle('<:carrinho:1524207445600370719> Revisão do Pedido')
+     .setDescription(`Cliente: <@${user.id}>`);
+ 
++  // Banner do produto (imagem grande cadastrada em /produto → Ajustar
++  // Produto → Banner) — mesma imagem que aparece na vitrine, agora
++  // também no carrinho, igual ao padrão pedido.
++  if (produto?.banner) embed.setImage(produto.banner);
++
+   const fields = [
+     { name: '<:caixa:1524207165496099007> Produto', value: nomeItem, inline: true },
+   ];
+@@ -873,7 +879,7 @@
+     });
+   } catch (e) { console.error('[KRON Intelligence] Falha ao registrar carrinho:', e.message); }
+ 
+-  const embedRevisao = buildRevisaoEmbedPropria({ user, nomeItem, varianteNome, estoqueTexto, dataCriacao, variante: varianteReal, pedido, guild });
++  const embedRevisao = buildRevisaoEmbedPropria({ user, nomeItem, varianteNome, estoqueTexto, dataCriacao, variante: varianteReal, pedido, guild, produto: produtoDoPedido });
+   const componentsRevisao = buildRevisaoComponentsPropria(keyNormalizada);
+   await canal.send({ content: `<@${user.id}>`, embeds: [embedRevisao], components: componentsRevisao });
+ 
+@@ -923,7 +929,7 @@
+   const embedRevisao = buildRevisaoEmbedPropria({
+     user: interaction.user, nomeItem: meta.nomeItem, varianteNome: meta.varianteNome,
+     estoqueTexto, dataCriacao: meta.dataCriacao,
+-    variante, pedido, guild: interaction.guild
++    variante, pedido, guild: interaction.guild, produto: produtoDoPedido
+   });
+   await interaction.update({ embeds: [embedRevisao], components: buildRevisaoComponentsPropria(pedido.varianteKey) });
+ }
+@@ -1328,7 +1334,7 @@
+   const embedRevisao = buildRevisaoEmbedPropria({
+     user: interaction.user, nomeItem: meta.nomeItem, varianteNome: meta.varianteNome,
+     estoqueTexto, dataCriacao: meta.dataCriacao,
+-    variante, pedido, guild: interaction.guild
++    variante, pedido, guild: interaction.guild, produto: produtoDoPedido
+   });
+   const msgs = await interaction.channel.messages.fetch({ limit: 10 });
+   const msgRevisao = msgs.find(m => m.author.id === interaction.client.user.id && m.embeds[0]?.title?.includes('Revisão'));

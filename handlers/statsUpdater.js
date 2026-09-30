@@ -1,0 +1,4 @@
+const db = require("../database/db");
+async function atualizarStats(client){for(const[guildId,guild]of client.guilds.cache){try{const g=db.getGuild(guildId);const canais=g.stats?.canais;if(!canais||canais.length===0)continue;await guild.members.fetch();const total=guild.memberCount;const bots=guild.members.cache.filter(m=>m.user.bot).size;const humanos=total-bots;for(const c of canais){const canal=guild.channels.cache.get(c.id);if(!canal)continue;let nome="";if(c.tipo==="members")nome="👥 Membros: "+total;if(c.tipo==="bots")nome="<:bot:1524207085850591273> Bots: "+bots;if(c.tipo==="online")nome="<:online:1533081467918221565> Humanos: "+humanos;if(nome&&canal.name!==nome)await canal.setName(nome).catch(()=>{});}}catch(e){console.error("Erro stats:",e.message);}}}
+function iniciarStatsUpdater(client){setInterval(()=>atualizarStats(client),5*60*1000);console.log("<:rendimentos:1528401542070145135> Stats updater iniciado!");}
+module.exports={iniciarStatsUpdater};

@@ -1,0 +1,13 @@
+--- sales-system/salesManager.js	2026-09-25 10:36:35.000000000 +0000
++++ sales-system/salesManager.js	2026-09-25 21:36:57.024832261 +0000
+@@ -1025,8 +1029,8 @@
+     // ─────────────────────────────────────────────────────────────────
+     try {
+       const { onVendaAprovada } = require('../utils/carteiraIntegration');
+-      const providerId = mpPaymentId || efiTxid || null;
+-      const provider    = mpPaymentId ? 'MERCADO_PAGO' : (efiTxid ? 'EFI' : (providerId ? 'C6' : null));
++      const providerId = mpPaymentId || efiTxid || c6Txid || openpixCorrelationId || null;
++      const provider    = mpPaymentId ? 'MERCADO_PAGO' : (efiTxid ? 'EFI' : (c6Txid ? 'C6' : (openpixCorrelationId ? 'OPENPIX' : null)));
+       await onVendaAprovada(guildId, total, {
+         produto:               p.titulo || variante.nome,
+         comprador:             clienteUser?.tag || clienteId,
