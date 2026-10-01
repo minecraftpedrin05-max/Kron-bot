@@ -92,6 +92,7 @@ const { iniciarProtectionScheduler } = ProtectionScheduler;
 client.once("ready", async () => {
   try { require("./sales-system/webhook").iniciarWebhook(client); } catch (e) { console.error("[Webhook] Falha ao iniciar o servidor web:", e.message); }
   await require("./utils/emojiSync").sincronizar(client);
+  try { require("./utils/hudBackup").agendar(client); } catch (e) { console.error("[HUD] Falha ao agendar backups:", e.message); }
   console.log("<:bot:1524207085850591273> Bot online: " + client.user.tag);
   client.user.setPresence({ status: "online", activities: [{ name: "KAEL", type: 0 }] });
 

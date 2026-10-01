@@ -63,3 +63,4 @@ database/backups/
 *.bak*
 
 database/invites.sqlite
+database/hud-backups/
